@@ -3,7 +3,7 @@ body {
     background-color: white
 }
 
-.emscripten {
+.emscripten {    
     top: 0px;
     left: 0px;
     margin: 0px;
@@ -12,7 +12,10 @@ body {
     height: 100%;
     overflow: hidden;
     display: block;
+	
 	position: relative;
+	
+	
     image-rendering: optimizeSpeed;
     image-rendering: -moz-crisp-edges;
     image-rendering: -o-crisp-edges;
@@ -20,7 +23,7 @@ body {
     image-rendering: optimize-contrast;
     image-rendering: crisp-edges;
     image-rendering: pixelated;
-    -ms-interpolation-mode: nearest-neighbor;
+    -ms-interpolation-mode: nearest-neighbor;    
 }
 
 .logo img {

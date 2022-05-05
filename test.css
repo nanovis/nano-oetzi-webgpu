@@ -1,6 +1,8 @@
-html, body {
+html,
+body {
     color: var(--text-color);
     font-family: var(--font-family);
+    font-size: 11px;
     width: 100%;
     height: 100%;
 }
@@ -13,6 +15,9 @@ html, body {
 .menubar {
     width: 100%;
     height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex;
 }
 
 .content {
@@ -22,9 +27,70 @@ html, body {
 }
 
 .left-panel {
-    width: 300px;
+    width: 270px;
 }
 
 .main-panel {
-    width: calc(100% - 300px);
+    width: calc(100% - 270px);
+}
+
+div.control {
+    background-color: red;
+}
+
+h2 {
+    font-size: 16px;
+    padding-bottom: 5px;
+}
+
+h3 {
+    font-size: 12px;
+    padding-left: 2px;
+    padding-top: 3px;
+    font-weight: 500;
+    font-style: italic;
+}
+
+hr.solid {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(254, 240, 205, 0.749), rgba(0, 0, 0, 0));
+}
+
+.colorpicker {
+    background-color: transparent;
+    appearance: none;
+    border: none;
+}
+
+.slider-div {
+    display: flex;
+    align-items: center;
+    justify-content: flex;
+    height: auto;
+}
+
+.canvas {
+    background-color: black;
+}
+
+.logo {
+    position: absolute;
+    bottom: 15px;
+}
+
+.custom-file-label::before {
+}
+
+.custom-file-label {
+    display: inline-block;
+    border: 1px solid #999;
+    padding: 5px 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 10pt;
+}
+
+.custom-file-label:hover::before {
+    background-color: black;
 }

@@ -7,3 +7,6 @@ var Handler;
     };
 })();
 
+testFunc = () => {
+    console.log("test");
+};

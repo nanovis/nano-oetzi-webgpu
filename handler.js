@@ -180,6 +180,17 @@ function useFileInputChunksOld(fileInput)
 	}
 }
 
+function hardInitTFValues() {
+    // colors
+    document.getElementById('tf0_color').value = "#cf1f60";
+    document.getElementById('tf1_color').value = "#c79aab";
+    document.getElementById('tf2_color').value = "#223378";
+    // low ramp values
+    document.getElementById('tf0_ramp_low').value = "10";
+    document.getElementById('tf1_ramp_low').value = "10";
+    document.getElementById('tf2_ramp_low').value = "50";
+
+}
 
 function useFileInput(fileInput) 
 {
@@ -209,6 +220,7 @@ function useFileInput(fileInput)
 			if(loadCounter == numFiles)
 			{
 				Module.open_volume();
+                hardInitTFValues();
 			}
 		};
 		fr.readAsArrayBuffer(file);
@@ -339,6 +351,53 @@ function adjustTransferFunction(elem)
 		tfIndex = 2;
 		ramp_low = document.getElementById('tf2_ramp_low').value / 100.0;
 		ramp_high = document.getElementById('tf2_ramp_high').value / 100.0;
+		
+		var hex_code = document.getElementById('tf2_color').value.split("");
+		red = parseInt(hex_code[1]+hex_code[2],16);
+		green = parseInt(hex_code[3]+hex_code[4],16);
+		blue = parseInt(hex_code[5]+hex_code[6],16);
+	};
+
+	Module.adjustTransferFunction(tfIndex, ramp_low, ramp_high, red, blue, green);
+}
+
+function adjustTransferFunction2(elem) 
+{
+	let parent = elem.parentNode;
+	let tfIndex = 0;
+	let ramp_low = 0;
+	let ramp_high = 0;
+	var red = 0;
+	var green = 0;
+	var blue = 0;
+	if(parent.id == 'tf0') 
+	{
+		tfIndex = 0;
+		ramp_low = document.getElementById('tf0_ramp_low').value / 100.0;
+		ramp_high = 1.0;
+		
+		var hex_code = document.getElementById('tf0_color').value.split("");
+		red = parseInt(hex_code[1]+hex_code[2],16);
+		green = parseInt(hex_code[3]+hex_code[4],16);
+		blue = parseInt(hex_code[5]+hex_code[6],16);
+		//var rgb = red+","+green+","+blue;
+	};
+	if(parent.id == 'tf1') 
+	{
+		tfIndex = 1;
+		ramp_low = document.getElementById('tf1_ramp_low').value / 100.0;
+		ramp_high = 1.0;
+		
+		var hex_code = document.getElementById('tf1_color').value.split("");
+		red = parseInt(hex_code[1]+hex_code[2],16);
+		green = parseInt(hex_code[3]+hex_code[4],16);
+		blue = parseInt(hex_code[5]+hex_code[6],16);
+	};
+	if(parent.id == 'tf2') 
+	{
+		tfIndex = 2;
+		ramp_low = document.getElementById('tf2_ramp_low').value / 100.0;
+		ramp_high = ramp_low + 0.01 >= 1.0 ? 1.0 : ramp_low +0.01;
 		
 		var hex_code = document.getElementById('tf2_color').value.split("");
 		red = parseInt(hex_code[1]+hex_code[2],16);

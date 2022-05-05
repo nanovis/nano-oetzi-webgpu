@@ -4,9 +4,12 @@
 	margin: auto;
 	top: 50%;
 	left: 50%;
+	
 	display : inline;
+	
 	width: 50px;
 	height: auto;
+	
 	border: none;
 	z-index: 1000;
 	background: url('img/loading.gif');
@@ -24,10 +27,13 @@
     height: 100%;
     overflow: hidden;
     display: none;
+	
 	position: absolute;
+	
 	z-index: 20;
+	
 	background-image: url('../img/loading.gif');
 	background-repeat: no-repeat;
 	background-position: center;
-	background-size: 50px;
+	background-size: 50px;	
 }
