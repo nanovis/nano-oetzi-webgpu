@@ -1,0 +1,9 @@
+{
+    "files": [
+		"ts_16_predictions-Spikes-256x256.json",
+		"ts_16_predictions-Membrane-256x256.json",
+		"ts_16_predictions-Inner-256x256.json", 
+		"ts_16_bin4-uint8-inv-mean-3-256x256.json",
+		"ts_16_predictions-Background-256x256.json"
+	]
+}

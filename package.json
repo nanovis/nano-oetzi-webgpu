@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@fluentui/web-components": "^2.4.0"
+  }
+}
