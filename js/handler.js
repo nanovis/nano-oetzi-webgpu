@@ -60,18 +60,6 @@ var Module;
 	}
 })();
 
-let reader = new FileReader();
-
-//function load_TransferFunctions()
-//{
-//	let files = document.getElementById('myTranserFunctions').files;
-//	for (let i = 0; i < files.length; i++) {
-//		let file = files[i];
-//		reader.addEventListener('loadend', transferFunctionFileInput);
-//		reader.readAsArrayBuffer(file);
-//	}
-//}
-
 function transferFunctionFileInput(fileInput) {
 	if (fileInput.files.length == 0) {
 		return;
