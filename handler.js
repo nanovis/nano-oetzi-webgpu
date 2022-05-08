@@ -1,68 +1,62 @@
 var Module;
-(async () => 
-{
+(async () => {
 	Module = {
 		preRun: [],
 		postRun: [],
-		print: (function() 
-		{
-			return function(text) 
-			{
+		print: (function() {
+			return function(text) {
 				text = Array.prototype.slice.call(arguments).join(' ');
 				console.log(text);
 			};
 		})(),
-		printErr: function(text) 
-		{
+		printErr: function(text) {
 			text = Array.prototype.slice.call(arguments).join(' ');
 			console.error(text);
 		},
-		canvas: (function() 
-		{
+		canvas: (function() {
 			var canvas = document.getElementById('canvas');
 			//canvas.addEventListener("webglcontextlost", function(e) { alert('FIXME: WebGL context lost, please reload the page'); e.preventDefault(); }, false);
 			return canvas;
 		})(),
-		setStatus: function(text) 
-		{
+		setStatus: function(text) {
 			console.log("status: " + text);
 		},
-		monitorRunDependencies: function(left) 
-		{
+		monitorRunDependencies: function(left) {
 			// no run dependencies to log
 		},
-		onRuntimeInitialized: function() 
-		{
-			console.log("initialized");            
+		onRuntimeInitialized: function() {
+			console.log("initialized");
 		}
 	};
-	window.onerror = function() 
-	{
+	window.onerror = function(){
 		console.log("onerror: " + event);
 	};
 
 	// Initialize the graphics adapter
-	{
+	if (navigator === undefined || navigator.gpu === undefined) {
+		var info = document.getElementById('errorcontainer');
+		info.style.display = 'block';
+		console.log("Error");
+	} else {
 		const adapter = await navigator.gpu.requestAdapter();
 		if (!adapter)
 		{
-			alert('Could not retrieve GPU adapter.')
-			return; 
+			alert('Could not retrieve GPU adapter.');
+			return;
 		}
 		const device = await adapter.requestDevice();
-		if (!device)
-		{
-			alert('Could not retrieve GPU device.')
-			return; 
+		if (!device) {
+			alert('Could not retrieve GPU device.');
+			return;
 		}
 		Module.preinitializedWebGPUDevice = device;
-	}
 
-	{
 		const js = document.createElement('script');
 		js.async = true;
 		js.src = "index.js";
 		document.body.appendChild(js);
+
+		canvasResize();
 	}
 })();
 
@@ -78,26 +72,23 @@ let reader = new FileReader();
 //	}
 //}
 
-function transferFunctionFileInput(fileInput) 
-{
+function transferFunctionFileInput(fileInput) {
 	if (fileInput.files.length == 0) {
 		return;
 	}
 
-	for (let i = 0; i < fileInput.files.length; i++) 
-	{
+	for (let i = 0; i < fileInput.files.length; i++){
 		let fr = new FileReader();
-		let file = fileInput.files[i];	
+		let file = fileInput.files[i];
 
-		fr.onload = function () 
-		{
+		fr.onload = function () {
 			var data = new Uint8Array(fr.result);
 			FS.writeFile(file.name, data);
 			Module.loadTransferFunction(file.name);
 			fileInput.value = '';
 		};
 		fr.readAsArrayBuffer(file);
-	}		
+	}
 }
 
 function chooseClippingPlane(elem)
@@ -127,38 +118,34 @@ function useFileInputChunks(fileInput)
 	if (fileInput.files.length == 0) {
 		return;
 	}
-	
+
 	var configFile = getFileFromList(fileInput.files, 'config.json');
-	
+
 	if(configFile == null)
 	{
 		alert('no config.json found');
 		return;
 	}
-	
+
 	var reader = new FileReader();
-	reader.onload = function(event) 
-	{
+	reader.onload = function(event){
 		var configJson = JSON.parse(event.target.result);
 		//	console.log('File content:', event.target.result);
-		
-		for (var i = 0; i < configJson.files.length; i += 1)
-		{
+
+		for (var i = 0; i < configJson.files.length; i += 1) {
 			let volumeDescr = configJson.files[i];
 			let readerB = new FileReader();
-			readerB.onload = function(event)
-			{
+			readerB.onload = function(event) {
 				//console.log('File content:', event.target.result);
 				let volumeDescrJson = JSON.parse(event.target.result);
 				let volumeDataFile = getFileFromList(fileInput.files, volumeDescrJson.file);
 				worker.postMessage([volumeDataFile]);
-			}			
+			}
 			readerB.readAsText(getFileFromList(fileInput.files, volumeDescr));
 		}
 	};
 	reader.readAsText(configFile);
-			
-	
+
 	//var file = fileInput.files[0];
 	//FS.WorkerFS.attachRemoteListener(worker);
 	//worker.postMessage([file], FS);
@@ -192,25 +179,22 @@ function hardInitTFValues() {
 
 }
 
-function useFileInput(fileInput) 
-{
+function useFileInput(fileInput) {
 	if (fileInput.files.length == 0) {
 		return;
 	}
-	
+
 	Module.start_app();
 
-	var loadingGif = document.getElementById('loadingcontainer'); 
+	var loadingGif = document.getElementById('loadingcontainer');
 	loadingGif.style.display = 'block';
 	var loadCounter = 0;
 	var numFiles = fileInput.files.length;
-	for (let i = 0; i < numFiles; i++) 
-	{
+	for (let i = 0; i < numFiles; i++) {
 		let fr = new FileReader();
 		let file = fileInput.files[i];
 
-		fr.onload = function () 
-		{
+		fr.onload = function () {
 			var data = new Uint8Array(fr.result);
 
 			FS.writeFile(file.name, data);
@@ -233,7 +217,7 @@ function loadFile(url, filename, numFiles) {
     .then(loadedData => {
         console.log("Reading file #" + loadCounter + ": " + filename);
         var data = new Uint8Array(loadedData);
-        
+
         FS.writeFile(filename, data);
         loadCounter++;
         if(loadCounter == numFiles) {
@@ -269,10 +253,10 @@ function loadDemoData() {
         'ts_16_predictions-Spikes-256x256.json',
         'ts_16_predictions-Spikes-256x256.raw'
     ];
-    
+
 	Module.start_app();
 
-	var loadingGif = document.getElementById('loadingcontainer'); 
+	var loadingGif = document.getElementById('loadingcontainer');
 	loadingGif.style.display = 'block';
 
     for (let filename in files256) {
@@ -280,24 +264,21 @@ function loadDemoData() {
     }
 }
 
-function uploadAnnotations(elem) 
-{
+function uploadAnnotations(elem) {
 	Module.save_annotations();
 	alert('Todo: implement');
 	const annotationJson = Module.FS.readFile('annotation.json', { encoding: 'utf8' });
 	console.log(annotationJson);
 }
 
-function downloadTF(which) 
-{
+function downloadTF(which) {
 	var color = document.getElementById('tf0_color').value;
 	var hex_code = color.split("");
 	var	red = parseInt(hex_code[1]+hex_code[2],16);
 	var	green = parseInt(hex_code[3]+hex_code[4],16);
 	var	blue = parseInt(hex_code[5]+hex_code[6],16);
-	
-	
-	var jsonData = { 
+
+	var jsonData = {
 		"rampLow": document.getElementById('tf0_ramp_low').value / 100.0,
 		"rampHigh": document.getElementById('tf0_ramp_high').value / 100.0,
 		"color": {
@@ -308,12 +289,9 @@ function downloadTF(which)
 }
 
 
-async function download(content, fileName, contentType) 
-{
-	if( window.showSaveFilePicker ) 
-	{
-		const opts = 
-		{
+async function download(content, fileName, contentType) {
+	if( window.showSaveFilePicker ) {
+		const opts = {
 			suggestedName: "transferFunction.json",
 			types: [
 			{
@@ -341,10 +319,8 @@ async function saveScreenshot(event)
 	//const image = await new Promise( (res) => canvas.toBlob( res ) );
 	let canvas = document.getElementById('canvas');
 	let image = canvas.toDataURL('image/jpeg');
-	if( window.showSaveFilePicker ) 
-	{
-		const opts = 
-		{
+	if( window.showSaveFilePicker ) {
+		const opts = {
 			suggestedName: "screenshot.jpg",
 			types: [
 			{
@@ -357,8 +333,7 @@ async function saveScreenshot(event)
 		await writable.write( image );
 		writable.close();
 	}
-	else 
-	{
+	else {
 		const saveImg = document.createElement( "a" );
 		saveImg.href = URL.createObjectURL( image );
 		saveImg.download= "image.png";
@@ -367,8 +342,7 @@ async function saveScreenshot(event)
 	}
 }
 
-function adjustTransferFunction(elem) 
-{
+function adjustTransferFunction(elem) {
 	let parent = elem.parentNode;
 	let tfIndex = 0;
 	let ramp_low = 0;
@@ -376,35 +350,32 @@ function adjustTransferFunction(elem)
 	var red = 0;
 	var green = 0;
 	var blue = 0;
-	if(parent.id == 'tf0') 
-	{
+	if(parent.id == 'tf0') {
 		tfIndex = 0;
 		ramp_low = document.getElementById('tf0_ramp_low').value / 100.0;
 		ramp_high = document.getElementById('tf0_ramp_high').value / 100.0;
-		
+
 		var hex_code = document.getElementById('tf0_color').value.split("");
 		red = parseInt(hex_code[1]+hex_code[2],16);
 		green = parseInt(hex_code[3]+hex_code[4],16);
 		blue = parseInt(hex_code[5]+hex_code[6],16);
 		//var rgb = red+","+green+","+blue;
 	};
-	if(parent.id == 'tf1') 
-	{
+	if(parent.id == 'tf1') {
 		tfIndex = 1;
 		ramp_low = document.getElementById('tf1_ramp_low').value / 100.0;
 		ramp_high = document.getElementById('tf1_ramp_high').value / 100.0;
-		
+
 		var hex_code = document.getElementById('tf1_color').value.split("");
 		red = parseInt(hex_code[1]+hex_code[2],16);
 		green = parseInt(hex_code[3]+hex_code[4],16);
 		blue = parseInt(hex_code[5]+hex_code[6],16);
 	};
-	if(parent.id == 'tf2') 
-	{
+	if(parent.id == 'tf2') {
 		tfIndex = 2;
 		ramp_low = document.getElementById('tf2_ramp_low').value / 100.0;
 		ramp_high = document.getElementById('tf2_ramp_high').value / 100.0;
-		
+
 		var hex_code = document.getElementById('tf2_color').value.split("");
 		red = parseInt(hex_code[1]+hex_code[2],16);
 		green = parseInt(hex_code[3]+hex_code[4],16);
@@ -414,8 +385,7 @@ function adjustTransferFunction(elem)
 	Module.adjustTransferFunction(tfIndex, ramp_low, ramp_high, red, blue, green);
 }
 
-function adjustTransferFunction2(elem) 
-{
+function adjustTransferFunction2(elem) {
 	let parent = elem.parentNode;
 	let tfIndex = 0;
 	let ramp_low = 0;
@@ -423,35 +393,32 @@ function adjustTransferFunction2(elem)
 	var red = 0;
 	var green = 0;
 	var blue = 0;
-	if(parent.id == 'tf0') 
-	{
+	if(parent.id == 'tf0') {
 		tfIndex = 0;
 		ramp_low = document.getElementById('tf0_ramp_low').value / 100.0;
 		ramp_high = 1.0;
-		
+
 		var hex_code = document.getElementById('tf0_color').value.split("");
 		red = parseInt(hex_code[1]+hex_code[2],16);
 		green = parseInt(hex_code[3]+hex_code[4],16);
 		blue = parseInt(hex_code[5]+hex_code[6],16);
 		//var rgb = red+","+green+","+blue;
 	};
-	if(parent.id == 'tf1') 
-	{
+	if(parent.id == 'tf1') {
 		tfIndex = 1;
 		ramp_low = document.getElementById('tf1_ramp_low').value / 100.0;
 		ramp_high = 1.0;
-		
+
 		var hex_code = document.getElementById('tf1_color').value.split("");
 		red = parseInt(hex_code[1]+hex_code[2],16);
 		green = parseInt(hex_code[3]+hex_code[4],16);
 		blue = parseInt(hex_code[5]+hex_code[6],16);
 	};
-	if(parent.id == 'tf2') 
-	{
+	if(parent.id == 'tf2') 	{
 		tfIndex = 2;
 		ramp_low = document.getElementById('tf2_ramp_low').value / 100.0;
 		ramp_high = ramp_low + 0.01 >= 1.0 ? 1.0 : ramp_low +0.01;
-		
+
 		var hex_code = document.getElementById('tf2_color').value.split("");
 		red = parseInt(hex_code[1]+hex_code[2],16);
 		green = parseInt(hex_code[3]+hex_code[4],16);
@@ -461,32 +428,26 @@ function adjustTransferFunction2(elem)
 	Module.adjustTransferFunction(tfIndex, ramp_low, ramp_high, red, blue, green);
 }
 
-	
-function setAnnotationKernelSize(elem) 
-{
+function setAnnotationKernelSize(elem) {
 	Module.setAnnotationKernelSize(elem.value);
 }
-function clipVolume(elem) 
-{
+function clipVolume(elem) {
 	Module.clip_volume(elem.checked, elem.value);
 }
 
-function aoEnabledHandler(elem) 
-{
+function aoEnabledHandler(elem) {
 	Module.enableAO(elem.checked);
 }
 
-function updateMask(fileInput) 
-{
-	var loadingGif = document.getElementById('loadingcontainer'); 
+function updateMask(fileInput) {
+	var loadingGif = document.getElementById('loadingcontainer');
 	loadingGif.style.display = 'block';
 	var numFiles = fileInput.files.length;
 	let fr = new FileReader();
 	let file = fileInput.files[0];
 	var which = document.getElementById('updateMaskWhich').value
 
-	fr.onload = function () 
-	{
+	fr.onload = function () 	{
 		var data = new Uint8Array(fr.result);
 		var name = 'new_mask.raw';
 		FS.writeFile(name, data);
@@ -494,30 +455,28 @@ function updateMask(fileInput)
 		fileInput.value = '';
 		Module.update_mask(which);
 	};
-	fr.readAsArrayBuffer(file);	
+	fr.readAsArrayBuffer(file);
 }
 
-function enableVolume(which) 
-{
+function enableVolume(which) {
 	Module.enable_volume(which);
 }
 
-function updateColor(picker) 
-{		
+function updateColor(picker) {
 	var hex_code = picker.value.split("");
 	red = parseInt(hex_code[1]+hex_code[2],16);
 	green = parseInt(hex_code[3]+hex_code[4],16);
 	blue = parseInt(hex_code[5]+hex_code[6],16);
 	Module.setColor(red / 255, green / 255, blue / 255);
-}     
+}
 
-window.addEventListener('resize', () => {
+var canvasResize = () => {
     var canvas = document.getElementById('canvas');
-    console.log(canvas.clientWidth);
-    // var mp = document.getElementById('main-panel');
-    // var w = mp.clientWidth;
-    // var h = mp.clientHeight;
-    canvas.height = canvas.clientWidth / 16.0 * 9.0;
-    // console.lo
-    
-});
+    var mp = document.getElementById('main-panel');
+	if (canvas.clientHeight < mp.clientHeight) {
+    	canvas.height = canvas.clientWidth / 16.0 * 9.0;
+		canvas.width = mp.clientWidth;
+	}
+};
+
+window.addEventListener('resize', canvasResize);

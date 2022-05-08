@@ -1,5 +1,6 @@
 html,
 body {
+    margin: 0;
     color: var(--text-color);
     font-family: var(--font-family);
     font-size: 11px;
@@ -33,18 +34,29 @@ body {
 
 .main-panel {
     width: calc(100% - 300px);
-    background-color: red;
+    background-color: black;
 }
 
 .canvas-container {
-    background-color: blue;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
-#canvas {
-    background-color: green;
+h1 {
+    white-space: nowrap;
 }
 
-div.control {
+.title {
+    color: var(--yellow-100);
+    text-decoration: none;
+}
+
+.title:hover {
+    text-decoration: underline;
 }
 
 h2 {
@@ -81,10 +93,7 @@ hr.solid {
 
 .logo {
     padding-top: 25px;
-    /* position: absolute;
-    bottom: 15px; */
 }
-
 
 .custom-file-label {
     display: inline-block;
@@ -102,7 +111,7 @@ hr.solid {
 .data-button {
     display: inline-block;
     border: 1px solid #999;
-    padding: 5px 8px;
+    padding: 7px 8px;
     font-weight: 700;
     font-size: 10pt;
 }
@@ -127,6 +136,77 @@ hr.solid {
     height: auto;
 }
 
-.loadingcontainer {
+.emscripten {
     background-color: black;
+    width: 100%;
+    overflow: hidden;
+    display: block;
+	position: relative;
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+
+.loading {
+	position: absolute;
+	margin: auto;
+	top: 50%;
+	left: 50%;
+	display : inline;
+	width: 50px;
+	height: auto;
+	border: none;
+	z-index: 1000;
+	background: url('img/loading.gif');
+	background-size: 10px;
+	background-repeat: no-repeat;
+}
+
+#loadingcontainer {
+    top: 0px;
+    left: 0px;
+    margin: 0px;
+    border: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: none;
+	position: absolute;
+	z-index: 20;
+	background-image: url('../img/loading.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 50px;
+    background-color: black;
+}
+
+#errorcontainer {
+    top: 0px;
+    left: 0px;
+    margin: 0px;
+    border: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: none;
+	position: absolute;
+	z-index: 30;
+    background:black;
+    background:rgba(0,0,0,0.8);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    text-align: center;
+}
+
+
+#errorcontainer h1 {
+    font-size: 40pt;
+    text-align: center;
 }
