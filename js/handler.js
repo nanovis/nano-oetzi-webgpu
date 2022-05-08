@@ -85,8 +85,6 @@ function chooseClippingPlane(elem)
 }
 
 
-const worker = new Worker("worker.js");
-
 
 function getFileFromList(fileInput, name)
 {
