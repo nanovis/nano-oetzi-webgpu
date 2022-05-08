@@ -27,15 +27,24 @@ body {
 }
 
 .left-panel {
-    width: 270px;
+    width: 300px;
+    overflow-y: auto;
 }
 
 .main-panel {
-    width: calc(100% - 270px);
+    width: calc(100% - 300px);
+    background-color: red;
+}
+
+.canvas-container {
+    background-color: blue;
+}
+
+#canvas {
+    background-color: green;
 }
 
 div.control {
-    background-color: red;
 }
 
 h2 {
@@ -70,17 +79,12 @@ hr.solid {
     height: auto;
 }
 
-.canvas {
-    background-color: black;
-}
-
 .logo {
-    position: absolute;
-    bottom: 15px;
+    padding-top: 25px;
+    /* position: absolute;
+    bottom: 15px; */
 }
 
-.custom-file-label::before {
-}
 
 .custom-file-label {
     display: inline-block;
@@ -92,5 +96,37 @@ hr.solid {
 }
 
 .custom-file-label:hover::before {
+    background-color: black;
+}
+
+.data-button {
+    display: inline-block;
+    border: 1px solid #999;
+    padding: 5px 8px;
+    font-weight: 700;
+    font-size: 10pt;
+}
+
+.nvis {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nanovis {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.nanovis:hover {
+    text-decoration: underline;
+}
+
+.logo-image {
+    width:270px;
+    height: auto;
+}
+
+.loadingcontainer {
     background-color: black;
 }

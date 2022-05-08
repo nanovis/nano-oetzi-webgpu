@@ -227,6 +227,59 @@ function useFileInput(fileInput)
 	}
 }
 
+function loadFile(url, filename, numFiles) {
+    fetch(url)
+    .then(response => response.arrayBuffer())
+    .then(loadedData => {
+        console.log("Reading file #" + loadCounter + ": " + filename);
+        var data = new Uint8Array(loadedData);
+        
+        FS.writeFile(filename, data);
+        loadCounter++;
+        if(loadCounter == numFiles) {
+            console.log("File reading done.");
+            Module.open_volume();
+            hardInitTFValues();
+        }
+    });
+}
+
+var loadCounter = 0;
+function loadDemoData() {
+    files = [];
+
+    var path = "./data/ts_16_256/";
+    var files256 =  [
+        'config.json',
+        'tf-bg.json',
+        'tf-in.json',
+        'tf-memb.json',
+        'tf-raw.json',
+        'tf-spike.json',
+        'ts_16_bin4-256x256.json',
+        'ts_16_bin4-256x256.raw',
+        'ts_16_bin4-uint8-inv-mean-3-256x256.json',
+        'ts_16_bin4-uint8-inv-mean-3-256x256.raw',
+        'ts_16_predictions-Background-256x256.json',
+        'ts_16_predictions-Background-256x256.raw',
+        'ts_16_predictions-Inner-256x256.json',
+        'ts_16_predictions-Inner-256x256.raw',
+        'ts_16_predictions-Membrane-256x256.json',
+        'ts_16_predictions-Membrane-256x256.raw',
+        'ts_16_predictions-Spikes-256x256.json',
+        'ts_16_predictions-Spikes-256x256.raw'
+    ];
+    
+	Module.start_app();
+
+	var loadingGif = document.getElementById('loadingcontainer'); 
+	loadingGif.style.display = 'block';
+
+    for (let filename in files256) {
+        loadFile(path + files256[filename], files256[filename], files256.length);
+    }
+}
+
 function uploadAnnotations(elem) 
 {
 	Module.save_annotations();
@@ -404,7 +457,7 @@ function adjustTransferFunction2(elem)
 		green = parseInt(hex_code[3]+hex_code[4],16);
 		blue = parseInt(hex_code[5]+hex_code[6],16);
 	};
-
+    // console.log(tfIndex, ramp_low, ramp_high, red, blue, green);
 	Module.adjustTransferFunction(tfIndex, ramp_low, ramp_high, red, blue, green);
 }
 
@@ -457,3 +510,14 @@ function updateColor(picker)
 	blue = parseInt(hex_code[5]+hex_code[6],16);
 	Module.setColor(red / 255, green / 255, blue / 255);
 }     
+
+window.addEventListener('resize', () => {
+    var canvas = document.getElementById('canvas');
+    console.log(canvas.clientWidth);
+    // var mp = document.getElementById('main-panel');
+    // var w = mp.clientWidth;
+    // var h = mp.clientHeight;
+    canvas.height = canvas.clientWidth / 16.0 * 9.0;
+    // console.lo
+    
+});
