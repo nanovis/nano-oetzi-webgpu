@@ -53,7 +53,7 @@ var Module;
 
 		const js = document.createElement('script');
 		js.async = true;
-		js.src = "index.js";
+		js.src = "./index.js";
 		document.body.appendChild(js);
 
 		canvasResize();
