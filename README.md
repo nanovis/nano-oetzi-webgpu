@@ -8,4 +8,4 @@ The current version was tested with Microsoft Edge Canary (Version: 102.0.1249.0
 The included demo data of ~ 160 MB in size might take some time to transfer and load.
 
 Other data is available in KAUST repository.  
-[Link will be added after data is accepted and published in the repository]
+https://repository.kaust.edu.sa/handle/10754/676709
