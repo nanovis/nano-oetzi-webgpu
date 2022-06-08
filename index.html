@@ -6,12 +6,16 @@
     <link rel="stylesheet" href="https://unpkg.com/primeflex@3.1.0/themes/arya-blue.css">
     <link rel="stylesheet" href="https://unpkg.com/primeflex@3.1.0/primeflex.css">
     <link rel="stylesheet" href="./css/index.css" />
+    <!-- nanovis.org -->
+    <meta http-equiv="origin-trial" content="AhLVwjd0gWvcfPySl8HD2lMuVmZwh3hF53qEgGzZOExHb0n9s+F/1QMvUpPPf81ucS0plwFJrfDaB52/OmpDyAsAAABieyJvcmlnaW4iOiJodHRwczovL3d3dy5uYW5vdmlzLm9yZzo0NDMiLCJmZWF0dXJlIjoiV2ViR1BVIiwiZXhwaXJ5IjoxNjYzNzE4Mzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZX0=">
+    <!-- localhost:5500 -->
+    <!-- <meta http-equiv="origin-trial" content="ArdyD7AN7GBSL2vEQpKfYNCnZWB+q6B99znCJQsj1an+Pn69C1tyL+ki0DwoejwruzSy9n6nvsp0EcVjgHqVAwAAAABJeyJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjU1MDAiLCJmZWF0dXJlIjoiV2ViR1BVIiwiZXhwaXJ5IjoxNjYzNzE4Mzk5fQ=="> -->
 </head>
 
 <body class="text-yellow-100 p-0 m-0">
     <div id="errorcontainer">
         <h1>WebGPU not supported.</h1>
-        Use Chorme Canary or Edge Canary.
+        Use Chrome Canary or Edge Canary.
     </div>
     <div class="root">
         <div class="menubar bg-bluegray-900 p-0 m-0">
@@ -66,7 +70,7 @@
                     <div class="my-3">
                         <h3 class="m-0">Spikes:</h3>
                         <div id="tf0" class="slider-div">
-                            <label for="tf0_ramp_low" class="mx-2">Ramp:</label>
+                            <label for="tf0_ramp_low" class="mx-2">Low ramp:</label>
                             <input type="range" min="0" max="100" value="0" oninput="adjustTransferFunction2(this);" class="slider" id="tf0_ramp_low" />
                             <input type="color" id="tf0_color" oninput ="adjustTransferFunction2(this);" name="tf0_color" value="#cf1f60" class="p0 mx-5 colorpicker">
                         </div>
@@ -74,7 +78,7 @@
                     <div class="my-3">
                         <h3 class="m-0">Membrane:</h3>
                         <div id="tf1" class="slider-div">
-                            <label for="tf1_ramp_low" class="mx-2">Ramp:</label>
+                            <label for="tf1_ramp_low" class="mx-2">Low ramp:</label>
                             <input type="range" min="0" max="100" value="0" oninput="adjustTransferFunction2(this);" class="slider" id="tf1_ramp_low" />
                             <input type="color" id="tf1_color" oninput ="adjustTransferFunction2(this);" name="tf1_color" value="#c79aab" class="p0 mx-5 colorpicker">
                         </div>
@@ -82,7 +86,7 @@
                     <div class="my-3">
                         <h3 class="m-0">Lumen:</h3>
                         <div id="tf2" class="slider-div">
-                            <label for="tf2_ramp_low" class="mx-2">Ramp:</label>
+                            <label for="tf2_ramp_low" class="mx-2">Low ramp:</label>
                             <input type="range" min="0" max="100" value="0" oninput="adjustTransferFunction2(this);" class="slider" id="tf2_ramp_low" />
                             <input type="color" id="tf2_color" oninput ="adjustTransferFunction2(this);" name="tf2_color" value="#223378" class="p0 mx-5 colorpicker"> 
                         </div>
@@ -113,7 +117,9 @@
             <div class="main-panel" id="main-panel">
                 <div style="width: 100%; height: 100%; position: relative;" class="canvas-container">
                     <div id="loadingcontainer">
-                        <!--image id="loadingGif" class = "loading" src = "img/loading.gif"-->
+                        <div id ="loadingcircle">
+                        </div>
+                        <div id="loadingtext" class="loading">Loading...</div>
                     </div>
                     <canvas class="emscripten canvas" id="canvas" oncontextmenu="event.preventDefault();"></canvas>
                 </div>

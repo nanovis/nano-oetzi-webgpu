@@ -7,11 +7,13 @@ var Module;
 			return function(text) {
 				text = Array.prototype.slice.call(arguments).join(' ');
 				console.log(text);
+                document.getElementById("loadingtext").innerHTML = text;
 			};
 		})(),
 		printErr: function(text) {
 			text = Array.prototype.slice.call(arguments).join(' ');
 			console.error(text);
+            document.getElementById("loadingtext").innerHTML = text;
 		},
 		canvas: (function() {
 			var canvas = document.getElementById('canvas');
@@ -20,16 +22,19 @@ var Module;
 		})(),
 		setStatus: function(text) {
 			console.log("status: " + text);
+            document.getElementById("loadingtext").innerHTML = "status:  "+  text;
 		},
 		monitorRunDependencies: function(left) {
 			// no run dependencies to log
 		},
 		onRuntimeInitialized: function() {
 			console.log("initialized");
+            document.getElementById("loadingtext").innerHTML = "initialized";
 		}
 	};
 	window.onerror = function(){
 		console.log("onerror: " + event);
+        document.getElementById("loadingtext").innerHTML = "onerror: " + event;
 	};
 
 	// Initialize the graphics adapter
@@ -202,12 +207,14 @@ function loadFile(url, filename, numFiles) {
     .then(response => response.arrayBuffer())
     .then(loadedData => {
         console.log("Reading file #" + loadCounter + ": " + filename);
+        document.getElementById("loadingtext").innerHTML = "Reading file #" + loadCounter + ": " + filename;
         var data = new Uint8Array(loadedData);
 
         FS.writeFile(filename, data);
         loadCounter++;
         if(loadCounter == numFiles) {
             console.log("File reading done.");
+            document.getElementById("loadingtext").innerHTML = "File reading done.";
             Module.open_volume();
             hardInitTFValues();
         }
