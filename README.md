@@ -5,7 +5,7 @@ This repository contains web-based volume rendering as presented in Nano-Oetzi p
 The online demo is accessible at the link below.  
 https://www.nanovis.org/nano-oetzi-webgpu/
 
-**The current version was tested with Microsoft Edge Canary (Version: 102.0.1249.0 (Official build) canary (64-bit))**
+**The current version was tested with Chrome and Chrome Canary**
 The included demo data of ~ 160 MB in size might take some time to transfer and load.
 
 
