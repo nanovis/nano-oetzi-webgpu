@@ -6,6 +6,7 @@ The online demo is accessible at the link below.
 https://www.nanovis.org/nano-oetzi-webgpu/
 
 **The current version was tested with Chrome and Chrome Canary**
+
 The included demo data of ~ 160 MB in size might take some time to transfer and load.
 
 
