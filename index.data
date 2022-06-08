@@ -9,6 +9,7 @@
 	"clipping-y-axis": 50,
 	"clipping-z-axis": 51,
 	"clipping-view-aligned": 52,
+	"clipping_raw_data": 32,
 	"_comment keys": "keycodes can be found here - https://www.glfw.org/docs/3.3/group__keys.html",
 	"_comment mouse buttons": "mouse button codes can be found here - https://www.glfw.org/docs/3.3/group__buttons.html"
 }{
@@ -38442,7 +38443,8 @@ fn main(
 	@location(2) light : vec3<f32>,
 	@location(3) lightPos : vec3<f32>,
 	@location(4) fragPos : vec3<f32>,
-	@location(5) tex_coords : vec2<f32> 
+	@location(5) tex_coords : vec2<f32>,
+	@builtin(position) position : vec4<f32>
 ) 
 -> @location(0) vec4<f32> 
 {
@@ -38453,11 +38455,26 @@ fn main(
 	var color = textureSample(tex, texSampler, coord);
 
 	coord.y = 1.0 - coord.y;
+	
+	var interaction = (param.param0.z == 1.0);
+	
+	if (interaction)
+	{
+		if (i32(position.x) % 2 == 0)
+		{
+			coord.x = coord.x + 1.0 / param.param0.x; 
+		}
+		if (i32(position.y) % 2 == 0)
+		{
+			coord.y = coord.y + 1.0 / param.param0.y; 
+		}
+	}
+	
 	var color0 = textureSample(tex0, texSampler, coord);
 		
 	color = color * 1.25;
 	
-	//return color;
+	return color0;
 	
 	return vec4<f32>(color.x + color0.x, color.y + color0.y, color.z + color0.z, color.w);
 }// multiple of 16 bytes
@@ -40046,7 +40063,49 @@ fn main(
 }
 
 
+// multiple of 16 bytes
 struct Param 
+{	
+	param0 : vec4<f32>;
+	param1 : vec4<f32>;
+	param2 : vec4<f32>;
+	param3 : vec4<f32>;
+	param4 : vec4<f32>;
+}
+
+@group(0) @binding(0) var texSampler : sampler;
+@group(0) @binding(1) var tex : texture_2d<f32>;
+@group(0) @binding(2) var tex0 : texture_2d<f32>;
+@group(0) @binding(3) var<uniform> param : Param;
+
+
+
+
+@stage(fragment)
+fn main(
+	@location(0) eye : vec3<f32>,
+	@location(1) direction : vec3<f32>,
+	@location(2) light : vec3<f32>,
+	@location(3) lightPos : vec3<f32>,
+	@location(4) fragPos : vec3<f32>,
+	@location(5) tex_coords : vec2<f32> 
+) 
+-> @location(0) vec4<f32> 
+{
+	var coord = tex_coords;
+	coord.x = tex_coords.y;
+	coord.y = tex_coords.x;
+	
+	var color = textureSample(tex, texSampler, coord);
+	
+	//var rr = textureSample(texTone, texSampler, color.r).r;
+	//var rg = textureSample(texTone, texSampler, color.g).r;
+	//var rb = textureSample(texTone, texSampler, color.b).r;
+	
+	color.r=0.0;
+			
+	return color;
+}struct Param 
 {
 	param0 : vec4<f32>,
 }
@@ -40130,13 +40189,27 @@ fn main(
 	@location(2) light : vec3<f32>,
 	@location(3) lightPos : vec3<f32>,
 	@location(4) fragPos : vec3<f32>,
-	@location(5) tex_coords : vec2<f32> 
+	@location(5) tex_coords : vec2<f32>,
+	@builtin(position) position : vec4<f32>
 ) 
 -> @location(0) vec4<f32> 
 {
 	var coord = tex_coords;
 	coord.x = tex_coords.y;
 	coord.y = tex_coords.x;
+	
+	//var interaction = (param.param0.z == 1.0);
+	//if (interaction)
+	//{	
+	//	if (i32(position.x) % 2 == 0 /*|| i32(position.y) % 2 == 0*/)
+	//	{
+	//		coord.x = coord.x + 1.0 / param.param0.x; 
+	//	}
+	//	if (i32(position.y) % 2 == 0 /*|| i32(position.y) % 2 == 0*/)
+	//	{
+	//		coord.y = coord.y + 1.0 / param.param0.y; 
+	//	}
+	//}
 	
 	var color = textureSample(tex, texSampler, coord);
 	
@@ -40145,7 +40218,7 @@ fn main(
 	//var rb = textureSample(texTone, texSampler, color.b).r;
 	
 	color = toneMap(color);
-			
+				
 	return color;
 }// multiple of 16 bytes
 [[block]] struct Param 
@@ -40294,7 +40367,8 @@ fn dataRead(pos : vec3<f32>, which : i32) -> vec4<f32>
 		{
 			var low3 = transferFunctionRamp1.ramp[3];
 			var high3 = transferFunctionRamp2.ramp[3];
-			mapped.w = clamp((sample.w - low3) / (high3 - low3), 0.0, 1.0);	
+			//mapped.w = clamp((sample.w - low3) / (high3 - low3), 0.0, 1.0);
+			mapped.w = sample.w;
 		}
 	} else if(which == 1) 
 	{
@@ -40393,6 +40467,11 @@ fn main(
 				 masks.y * color_transfer(1) +
 				 masks.z * color_transfer(2);
 				 
+	if(param.param0.w == 1.0) {
+		result_color = vec3<f32>(masks.w);
+	}
+	
+				 
 	var stripes : array<vec3<f32>, 3>;
 	var stripeStrength = 0.2;
 	
@@ -40417,7 +40496,8 @@ fn main(
 	
 	var sample = vec4<f32>(result_color.x, result_color.y, result_color.z, 1.0);
 	
-	if(length(sample.xyz) > 0.1) 
+	
+	if(param.param0.w == 1.0 || length(sample.xyz) > 0.0001) 
 	{
 		sample.w = 1.0;
 		fragColor = sample;
@@ -41031,7 +41111,7 @@ struct Param
 	enableAmbientOcclusion : i32;
 	enableSoftShadows : i32;
 	
-	slice : f32;
+	interaction : f32;
 	sampleRate : f32;
 	aoRadius : f32;
 	aoStrength : f32;
@@ -41163,6 +41243,8 @@ fn cube(eye : vec3<f32>, dir : vec3<f32>, size : vec3<f32>) -> CubeOutput
 	return output;
 }
 
+var<private> clipped : bool;
+
 fn clip(sample : vec4<f32>, pos : vec3<f32> ) -> vec4<f32>
 {
 	var result = sample;
@@ -41171,6 +41253,7 @@ fn clip(sample : vec4<f32>, pos : vec3<f32> ) -> vec4<f32>
 	
 	if(d > r) 
 	{
+		//clipped = true;
 		result = result * param.clippingMask;
 	}
 
@@ -41194,7 +41277,6 @@ fn dataReadAnnotation(pos : vec3<f32>) -> vec4<f32>
 	
 	return result;
 }
-
 
 fn dataRead(pos : vec3<f32>) -> vec4<f32>
 {
@@ -41225,8 +41307,15 @@ fn dataRead(pos : vec3<f32>) -> vec4<f32>
 	var high3 = transferFunctionRamp2.ramp[3];
 	mapped.w = clamp((sample4.w - low3) / (high3 - low3), 0.0, 1.0);	
 
-	
-	mapped = clip(mapped, posOrig);
+	var clipEnabled = param.clippingMask.x != 1.0 ||
+					  param.clippingMask.y != 1.0 ||
+					  param.clippingMask.z != 1.0;
+
+	if (clipEnabled && !clipped)
+	{
+		mapped = clip(mapped, posOrig);
+	}
+
 	
 	return mapped;
 }
@@ -41313,8 +41402,18 @@ fn main(
 	var output : FragmentOutput;
 	output.frag_depth = 0.0;
 	output.color = vec4<f32>(1.0, 0.0, 0.0, 1.0);
-	
 
+	var interaction = (param.interaction == 1.0);
+	if(interaction)
+	{
+		if (i32(position.x) % 2 == 0 || i32(position.y) % 2 == 0)
+		{
+			//discard;
+		}
+	}
+
+	clipped = false;
+	
 	// volumeRatio = voxelSize * (dataSize / maxDataSize)
 	var volumeRatio = volumeRatios.ratio[0];
 	//size = vec3<f32>(1.5, 1.0, 1.0);
@@ -41605,6 +41704,9 @@ fn main(
 	var fragColor = vec4<f32>(accumC.x, accumC.y, accumC.z, accumA);
 	
 	
+	/*fragColor.x = fragColor.x * 4.0;
+	fragColor.y = fragColor.y * 4.0;
+	fragColor.z = fragColor.z * 4.0;*/
 	
 	//fragColor = sample;
 	//fragColor = vec4<f32>(1.0, 0.0, 0.0, 1.0);
