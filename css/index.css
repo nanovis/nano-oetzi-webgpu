@@ -162,7 +162,7 @@ hr.solid {
 	height: auto;
 	border: none;
 	z-index: 1000;
-	background: url('img/loading.gif');
+	background: url('../img/loading.gif');
 	background-size: 10px;
 	background-repeat: no-repeat;
 }
