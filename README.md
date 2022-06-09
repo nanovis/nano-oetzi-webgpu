@@ -1,4 +1,4 @@
-# Nano-Otzi: Cryo-Electron Tomography Visualization Guided by Learned Segmentations
+# Finding Nano-Ötzi: Cryo-Electron Tomography Visualization Guided by Learned Segmentation
 This repository contains web-based volume rendering as presented in Nano-Oetzi paper.
 
 ## Deployment
