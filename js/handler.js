@@ -228,6 +228,7 @@ function loadDemoData() {
     var path = "./data/ts_16_256/";
     var files256 =  [
         'config.json',
+		'session.json',
         'tf-bg.json',
         'tf-in.json',
         'tf-memb.json',
