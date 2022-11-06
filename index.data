@@ -60,11 +60,11 @@
 }// multiple of 16 bytes
 struct Param 
 {	
-	param0 : vec4<f32>;
-	param1 : vec4<f32>;
-	param2 : vec4<f32>;
-	param3 : vec4<f32>;
-	param4 : vec4<f32>;
+	param0 : vec4<f32>,
+	param1 : vec4<f32>,
+	param2 : vec4<f32>,
+	param3 : vec4<f32>,
+	param4 : vec4<f32>,
 }
 
 @group(0) @binding(0) var texSampler : sampler;
@@ -85,7 +85,7 @@ fn toneMap(color : vec4<f32>) -> vec4<f32>
 	return mappedColor;
 }
 
-@stage(fragment)
+@fragment
 fn main(
 	@location(0) eye : vec3<f32>,
 	@location(1) direction : vec3<f32>,
@@ -128,36 +128,36 @@ fn main(
 	return vec4<f32>(color.x + color0.x, color.y + color0.y, color.z + color0.z, color.w);
 }struct Param 
 {
-	mousePosX : f32;
-	mousePosY : f32;
-	param2 : f32;
-	param3 : f32;
+	mousePosX : f32,
+	mousePosY : f32,
+	param2 : f32,
+	param3 : f32,
 	
-	volumeSize : vec4<u32>;
-	annotationVolume : vec4<f32>;
-	vertex : vec4<f32>;
-	pingPong : vec4<f32>;
-	kernelSize : vec4<f32>;
-	clippingPlaneOrigin : vec4<f32>;
-	clippingPlaneNormal : vec4<f32>;
+	volumeSize : vec4<u32>,
+	annotationVolume : vec4<f32>,
+	vertex : vec4<f32>,
+	pingPong : vec4<f32>,
+	kernelSize : vec4<f32>,
+	clippingPlaneOrigin : vec4<f32>,
+	clippingPlaneNormal : vec4<f32>,
 }
 
 struct Plane 
 {
-	position : vec3<f32>;
-	normal : vec3<f32>;
+	position : vec3<f32>,
+	normal : vec3<f32>,
 }
 
 struct Ray 
 {
-	origin : vec3<f32>;
-	direction : vec3<f32>;
+	origin : vec3<f32>,
+	direction : vec3<f32>,
 }
 
 struct Intersection 
 {
-	intersects : bool;
-	position : vec3<f32>;
+	intersects : bool,
+	position : vec3<f32>,
 }
 
 @group(0) @binding(0) var<uniform> param : Param;
@@ -226,7 +226,7 @@ fn apply_brush(pos : vec3<f32>, delta : vec3<i32>, copy : bool)
 	textureStore(output, tex_coord_kernel, result);	
 }
 
-@stage(compute) @workgroup_size(4, 4, 4)
+@compute @workgroup_size(4, 4, 4)
 fn main(@builtin(global_invocation_id) global_id : vec3<u32>) 
 {
 	var kernel = vec3<i32>(i32(param.kernelSize.x), i32(param.kernelSize.y), i32(param.kernelSize.z));
@@ -243,13 +243,13 @@ fn main(@builtin(global_invocation_id) global_id : vec3<u32>)
 	apply_brush(vec3<f32>(param.vertex.x, param.vertex.y, param.vertex.z), delta, copy);	
 }[[block]] struct Param 
 {
-	paramF1 : f32;
-	paramF2 : f32;
-	paramF3 : f32;
-	screenSize : vec2<f32>;
-	paramV1 : vec3<f32>;
-	paramV2 : vec3<f32>;
-	paramV3 : vec3<f32>;
+	paramF1 : f32,
+	paramF2 : f32,
+	paramF3 : f32,
+	screenSize : vec2<f32>,
+	paramV1 : vec3<f32>,
+	paramV2 : vec3<f32>,
+	paramV3 : vec3<f32>,
 };
 
 [[group(0), binding(0)]] var texSampler : sampler;
@@ -1368,11 +1368,11 @@ if (mx.a < 0.025) continue;
 // multiple of 16 bytes
 struct Param 
 {	
-	param0 : vec4<f32>;
-	param1 : vec4<f32>;
-	param2 : vec4<f32>;
-	param3 : vec4<f32>;
-	param4 : vec4<f32>;
+	param0 : vec4<f32>,
+	param1 : vec4<f32>,
+	param2 : vec4<f32>,
+	param3 : vec4<f32>,
+	param4 : vec4<f32>,
 }
 
 @group(0) @binding(0) var texSampler : sampler;
@@ -1380,7 +1380,7 @@ struct Param
 @group(0) @binding(2) var tex0 : texture_2d<f32>;
 @group(0) @binding(3) var<uniform> param : Param;
 
-@stage(fragment)
+@fragment
 fn main(
 	@location(0) eye : vec3<f32>,
 	@location(1) direction : vec3<f32>,
@@ -1445,11 +1445,11 @@ fn main(
 // multiple of 16 bytes
 struct Param 
 {	
-	param0 : vec4<f32>;
-	param1 : vec4<f32>;
-	param2 : vec4<f32>;
-	param3 : vec4<f32>;
-	param4 : vec4<f32>;
+	param0 : vec4<f32>,
+	param1 : vec4<f32>,
+	param2 : vec4<f32>,
+	param3 : vec4<f32>,
+	param4 : vec4<f32>,
 }
 
 @group(0) @binding(0) var texSampler : sampler;
@@ -1457,7 +1457,7 @@ struct Param
 @group(0) @binding(2) var tex0 : texture_2d<f32>;
 @group(0) @binding(3) var<uniform> param : Param;
 
-@stage(fragment)
+@fragment
 fn main(
 	@location(0) eye : vec3<f32>,
 	@location(1) direction : vec3<f32>,
@@ -1526,7 +1526,7 @@ struct Param
 
 
 
-@stage(compute) @workgroup_size(4, 4, 4)
+@compute @workgroup_size(4, 4, 4)
 fn main(@builtin(global_invocation_id) global_id : vec3<u32>) 
 {
 	var bounds = vec3<i32>(i32(param.param0.x), i32(param.param0.y), i32(param.param0.z));
@@ -1561,11 +1561,11 @@ fn main(@builtin(global_invocation_id) global_id : vec3<u32>)
 }// multiple of 16 bytes
 struct Param 
 {	
-	param0 : vec4<f32>;
-	param1 : vec4<f32>;
-	param2 : vec4<f32>;
-	param3 : vec4<f32>;
-	param4 : vec4<f32>;
+	param0 : vec4<f32>,
+	param1 : vec4<f32>,
+	param2 : vec4<f32>,
+	param3 : vec4<f32>,
+	param4 : vec4<f32>,
 }
 
 @group(0) @binding(0) var texSampler : sampler;
@@ -1591,7 +1591,7 @@ fn toneMap(color : vec4<f32>) -> vec4<f32>
 	return mappedColor;
 }
 
-@stage(fragment)
+@fragment
 fn main(
 	@location(0) eye : vec3<f32>,
 	@location(1) direction : vec3<f32>,
@@ -1630,17 +1630,17 @@ fn main(
 				
 	return color;
 }struct VertexOutput {
-	@location(0) eye : vec3<f32>; 
-	@location(1) direction : vec3<f32>; 
-	@location(2) light : vec3<f32>;
-	@location(3) lightPos : vec3<f32>;
-	@location(4) fragPos : vec3<f32>;
-	@location(5) tex_coords : vec2<f32>;
-	@builtin(position) Position : vec4<f32>;
+	@location(0) eye : vec3<f32>,
+	@location(1) direction : vec3<f32>,
+	@location(2) light : vec3<f32>,
+	@location(3) lightPos : vec3<f32>,
+	@location(4) fragPos : vec3<f32>,
+	@location(5) tex_coords : vec2<f32>,
+	@builtin(position) Position : vec4<f32>,
 }
 
 
-@stage(vertex) fn main(
+@vertex fn main(
 	@location(0) vertex : vec3<f32>,
 	@location(1) txCoord : vec2<f32>
 )-> VertexOutput
@@ -1654,27 +1654,27 @@ fn main(
 	return output;	
 }struct Param 
 {
-	param0 : vec4<f32>;
-	enableVolumes : vec4<f32>;
-	clippingPlaneOrigin : vec4<f32>;
-	clippingPlaneNormal : vec4<f32>;
-	volumeSize : vec4<f32>;
-	screenSize : vec4<f32>;
+	param0 : vec4<f32>,
+	enableVolumes : vec4<f32>,
+	clippingPlaneOrigin : vec4<f32>,
+	clippingPlaneNormal : vec4<f32>,
+	volumeSize : vec4<f32>,
+	screenSize : vec4<f32>,
 }
 
 struct TransferFunctionColor
 {
-	color : array<vec4<f32>>;
+	color : array<vec4<f32>>,
 }
 
 struct TransferFunctionRamp
 {
-	ramp : array<f32>;
+	ramp : array<f32>,
 }
 
 struct VolumeRatios
 {
-	ratio : array<vec3<f32>>;
+	ratio : array<vec3<f32>>,
 }
 
 @group(0) @binding(1) var<uniform> param : Param;
@@ -1775,7 +1775,7 @@ fn outline(coords : vec3<f32>) -> vec4<f32>
 	return color;
 }
 
-@stage(fragment) 
+@fragment
 fn main(
 	@location(0) color: vec3<f32>,
 	@location(1) tex_coords : vec2<f32>,
@@ -1882,33 +1882,33 @@ fn main(
 	//return fragColor + outline_color + vec4<f32>(annotation, annotation,annotation, 1.0) * annotationColor;
 }struct Camera 
 {
-	model : mat4x4<f32>;
-	view : mat4x4<f32>;
-	viewInv : mat4x4<f32>;
-	proj : mat4x4<f32>;
+	model : mat4x4<f32>,
+	view : mat4x4<f32>,
+	viewInv : mat4x4<f32>,
+	proj : mat4x4<f32>,
 }
 
 struct Model {
-	matrix : mat4x4<f32>;
+	matrix : mat4x4<f32>,
 }
 
 struct Param 
 {
-	param0 : vec4<f32>;
-	param1 : vec4<f32>;
+	param0 : vec4<f32>,
+	param1 : vec4<f32>,
 }
 
 @group(0) @binding(0) var<uniform> camera : Camera;
 @group(0) @binding(1) var<uniform> param : Param;
 
 struct VertexOutput {
-	@builtin(position) position : vec4<f32>;
-	@location(0) color: vec3<f32>;
-	@location(1) tex_coords : vec2<f32>;
-	@location(2) world_pos : vec4<f32>; 
+	@builtin(position) position : vec4<f32>,
+	@location(0) color: vec3<f32>,
+	@location(1) tex_coords : vec2<f32>,
+	@location(2) world_pos : vec4<f32>, 
 }
 
-@stage(vertex) fn main(
+@vertex fn main(
 	@location(0) vertex : vec3<f32>,
 	@location(1) txCoord : vec2<f32>)
 -> VertexOutput
@@ -1922,7 +1922,7 @@ struct VertexOutput {
 	output.color = vec3<f32>(1.0, 0.0, 0.0);
 				
 	return output;
-}[[stage(fragment)]] 
+}[[fragment]] 
 fn main(
 	[[location(0)]] vCol: vec3<f32>,
 	[[location(1)]] direction: vec3<f32>,
@@ -1953,10 +1953,10 @@ fn radians(degs : f32) -> f32 {
 [[group(0), binding(1)]] var<uniform> model : Model;
 
 struct VertexOutput {
-  [[location(0)]] vCol: vec3<f32>;
-  [[location(1)]] direction: vec3<f32>;
-  [[location(2)]] eye: vec3<f32>;
-  [[builtin(position)]] Position : vec4<f32>;
+  [[location(0)]] vCol: vec3<f32>,
+  [[location(1)]] direction: vec3<f32>,
+  [[location(2)]] eye: vec3<f32>,
+  [[builtin(position)]] Position : vec4<f32>,
 };
 
 [[stage(vertex)]] fn main(
@@ -1983,39 +1983,39 @@ struct VertexOutput {
 	return output;
 }[[block]] struct CubeOutput 
 {
-	t : f32;
-	fr : f32;
+	t : f32,
+	fr : f32,
 };
 
 [[block]] struct VolumeRatios
 {
-	ratio : array<vec3<f32>>;
+	ratio : array<vec3<f32>>,
 };
 
 [[block]] struct TransferFunctionColor
 {
-	color : array<vec4<f32>>;
+	color : array<vec4<f32>>,
 };
 
 [[block]] struct TransferFunctionRamp
 {
-	ramp : array<f32>;
+	ramp : array<f32>,
 };
 
 
 [[block]] struct Param 
 {
-	enableEarlyRayTermination : i32;
-	enableJittering : i32;
-	enableAmbientOcclusion : i32;
-	enableSoftShadows : i32;
-	slice : f32;
-	sampleRate : f32;
-	aoRadius : f32;
-	aoStrength : f32;
-	aoNumSamples : i32;
-	shadowQuality : f32;
-	shadowStrength : f32;
+	enableEarlyRayTermination : i32,
+	enableJittering : i32,
+	enableAmbientOcclusion : i32,
+	enableSoftShadows : i32,
+	slice : f32,
+	sampleRate : f32,
+	aoRadius : f32,
+	aoStrength : f32,
+	aoNumSamples : i32,
+	shadowQuality : f32,
+	shadowStrength : f32,
 };
 [[group(0), binding(2)]] var s : sampler;
 [[group(0), binding(3)]] var volume0 : texture_3d<f32>;
@@ -2411,83 +2411,83 @@ fn main(
 	return fragColor;
 }struct CubeOutput 
 {
-	t : f32;
-	fr : f32;
+	t : f32,
+	fr : f32,
 }
 
 struct Plane 
 {
-	position : vec3<f32>;
-	normal : vec3<f32>;
+	position : vec3<f32>,
+	normal : vec3<f32>,
 }
 
 struct Camera {
-	view : mat4x4<f32>;
-	viewInv : mat4x4<f32>;
-	proj : mat4x4<f32>;
-	aspectRatio : f32;
-	fov : f32;
+	view : mat4x4<f32>,
+	viewInv : mat4x4<f32>,
+	proj : mat4x4<f32>,
+	aspectRatio : f32,
+	fov : f32,
 }
 
 struct Ray 
 {
-	origin : vec3<f32>;
-	direction : vec3<f32>;
+	origin : vec3<f32>,
+	direction : vec3<f32>,
 }
 
 struct Intersection 
 {
-	intersects : bool;
-	position : vec3<f32>;
+	intersects : bool,
+	position : vec3<f32>,
 }
 
 struct VolumeRatios
 {
-	ratio : array<vec3<f32>>;
+	ratio : array<vec3<f32>>,
 }
 
 struct TransferFunctionColor
 {
-	color : array<vec4<f32>>;
+	color : array<vec4<f32>>,
 }
 
 struct TransferFunctionRamp
 {
-	ramp : array<f32>;
+	ramp : array<f32>,
 }
 
 struct Param 
 {
-	enableEarlyRayTermination : i32;
-	enableJittering : i32;
-	enableAmbientOcclusion : i32;
-	enableSoftShadows : i32;
+	enableEarlyRayTermination : i32,
+	enableJittering : i32,
+	enableAmbientOcclusion : i32,
+	enableSoftShadows : i32,
 	
-	interaction : f32;
-	sampleRate : f32;
-	aoRadius : f32;
-	aoStrength : f32;
+	interaction : f32,
+	sampleRate : f32,
+	aoRadius : f32,
+	aoStrength : f32,
 	
-	aoNumSamples : i32;
-	shadowQuality : f32;
-	shadowStrength : f32;
-	voxelSize : f32;
+	aoNumSamples : i32,
+	shadowQuality : f32,
+	shadowStrength : f32,
+	voxelSize : f32,
 	
-	enableVolumeA : i32;
-	enableVolumeB : i32;
-	enableVolumeC : i32;
-	enableVolumeD : i32;
+	enableVolumeA : i32,
+	enableVolumeB : i32,
+	enableVolumeC : i32,
+	enableVolumeD : i32,
 	
-	clippingMask : vec4<f32>;
-	viewVector : vec4<f32>;
-	clippingPlaneOrigin : vec4<f32>;
-	clippingPlaneNormal : vec4<f32>;
-	clearColor : vec4<f32>;
+	clippingMask : vec4<f32>,
+	viewVector : vec4<f32>,
+	clippingPlaneOrigin : vec4<f32>,
+	clippingPlaneNormal : vec4<f32>,
+	clearColor : vec4<f32>,
 	
-	enableAnnotations : i32;
-	annotationVolume : i32;
-	annotationPingPong : i32;
-	shadowRadius : f32;
+	enableAnnotations : i32,
+	annotationVolume : i32,
+	annotationPingPong : i32,
+	shadowRadius : f32,
 }
 
 @group(0) @binding(0) var<uniform> camera : Camera;
@@ -2734,11 +2734,11 @@ fn intersect_plane(ray: Ray, p : Plane) -> Intersection
 }
 
 struct FragmentOutput {
-	@location(0) color : vec4<f32>;
-	@builtin(frag_depth) frag_depth : f32;
+	@location(0) color : vec4<f32>,
+	@builtin(frag_depth) frag_depth : f32,
 }
 
-@stage(fragment)
+@fragment
 fn main(
 	@location(0) eye : vec3<f32>,
 	@location(1) direction : vec3<f32>,
@@ -2746,7 +2746,7 @@ fn main(
 	@location(3) lightPos : vec3<f32>,
 	@location(4) fragPos : vec3<f32>,
 	@location(5) tex_coords : vec2<f32>,
-	@builtin(position) position : vec4<f32>
+	@builtin(position) position : vec4<f32>,
 ) 
 -> FragmentOutput
 {	
@@ -3476,27 +3476,27 @@ fn main(
 	
 	return fragColor;
 }struct Camera {
-	view : mat4x4<f32>;
-	viewInv : mat4x4<f32>;
-	proj : mat4x4<f32>;
-	aspectRatio : f32;
-	fov : f32;
+	view : mat4x4<f32>,
+	viewInv : mat4x4<f32>,
+	proj : mat4x4<f32>,
+	aspectRatio : f32,
+	fov : f32,
 }
 
 @group(0) @binding(0) var<uniform> camera : Camera;
 
 
 struct VertexOutput {
-	@location(0) eye : vec3<f32>;
-	@location(1) direction : vec3<f32>;
-	@location(2) light : vec3<f32>;
-	@location(3) lightPos : vec3<f32>;
-	@location(4) fragPos : vec3<f32>;
-	@location(5) tex_coords : vec2<f32>; 
-	@builtin(position) position : vec4<f32>;
+	@location(0) eye : vec3<f32>,
+	@location(1) direction : vec3<f32>,
+	@location(2) light : vec3<f32>,
+	@location(3) lightPos : vec3<f32>,
+	@location(4) fragPos : vec3<f32>,
+	@location(5) tex_coords : vec2<f32>, 
+	@builtin(position) position : vec4<f32>,
 }
 
-@stage(vertex) fn main(
+@vertex fn main(
 @location(0) vertex : vec3<f32>,
 @location(1) txCoord : vec2<f32>)
 -> VertexOutput
