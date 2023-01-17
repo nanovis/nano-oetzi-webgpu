@@ -125,7 +125,7 @@ fn main(
 	
 	return color0;
 	
-	return vec4<f32>(color.x + color0.x, color.y + color0.y, color.z + color0.z, color.w);
+//	return vec4<f32>(color.x + color0.x, color.y + color0.y, color.z + color0.z, color.w);
 }struct Param 
 {
 	mousePosX : f32,
